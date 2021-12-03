@@ -82,10 +82,14 @@ while seguir:
 
         SQLconnection.db.commit()
 
-        print('...Camion ingresao con exito...\n')
-        input('Presione Enter para continuar...')
+        print('...Camion ingresado con exito...\n')
 
-        ingreso_camion = False
+        pregunta = str(input('Desea ingresar otro camion?[S/n]'))
+
+        if pregunta.upper() == 'S':
+            ingreso_camion = True
+        else:
+            ingreso_camion = False
 
     # ////////////////////////INGRESO CHOFER////////////////////////
     while ingreso_chofer:
@@ -151,10 +155,14 @@ while seguir:
 
         SQLconnection.db.commit()
 
-        print('...Acoplado ingresado con exito...')
-        input('Presione Enter para continuar...')
+        print('...Acoplado ingresado con exito...\n')
 
-        ingreso_acoplado = False
+        pregunta = str(input('Desea ingresar otro acoplado?[S/n]'))
+
+        if pregunta.upper() == 'S':
+            ingreso_acoplado = True
+        else:
+            ingreso_acoplado = False
 
     # ////////////////////////INGRESO CARGA////////////////////////
     while ingreso_carga:
@@ -164,9 +172,14 @@ while seguir:
 
         cursor.execute(sql, (desc, ))
         SQLconnection.db.commit()
-        print('...Carga ingresada con exito...')
-        print('Presione Enter para continuar...')
-        ingreso_carga = False
+        print('...Carga ingresada con exito...\n')
+
+        pregunta = str(input('Desea ingresar otra carga?[S/n]'))
+
+        if pregunta.upper() == 'S':
+            ingreso_carga = True
+        else:
+            ingreso_carga = False
     # ////////////////////////INGRESO RUTA////////////////////////
     while ingreso_ruta:
         sql = "insert into RUTA(DETALLE, FECHA, CHOFER_FK, CAMION_FK, ORIGEN_FK, DESTINO_FK) values (%s, %s, %s, %s, %s, %s)"
@@ -209,15 +222,20 @@ while seguir:
         cursor.execute(sql, val)
         SQLconnection.db.commit()
 
-        print('...Ruta ingresada con exito...')
-        input('Presione Enter para continuar...')
+        print('...Ruta ingresada con exito...\n')
+        pregunta = str(input('Desea ingresar otra ruta?[S/n]'))
 
-        ingreso_ruta = False
+        if pregunta.upper() == 'S':
+            ingreso_ruta = True
+        else:
+            ingreso_ruta = False
         # ////////////////////////LISTA CHOFERES////////////////////////
     if lista_chofer is True:
         cursor.execute("select * from vista_chofer;")
 
         resultado = cursor.fetchall()
+
+        print(' RUT   |    NOMBRE    |  LICENCIA  ')
 
         for x in resultado:
             print(x)
@@ -239,10 +257,21 @@ while seguir:
         lista_camion = False
     # ////////////////////////LISTA RUTAS////////////////////////
     if lista_ruta is True:
-        print('Lista de Rutas')
+        cursor.execute('SELECT * FROM vista_ruta_2')
+
+        resultado = cursor.fetchall()
+
+        print('FOLIO|RUT | PATENTE |             ORIGEN             |             DESTINO             |         DETALLE')
+
+        for x in resultado:
+            print(x)
+
+        continuar = input('Presione Enter para continuar...')
+
+        lista_ruta = False
     # ////////////////////////BUSCAR CHOFER////////////////////////
     while buscar_chofer:
-        sql = "select* from CHOFER where RUT = (%s)"
+        sql = "select rut, CONCAT(nombre,' ',apellido), edad, licencia from CHOFER where RUT = (%s)"
 
         rut = input("Introduzca rut del chofer: ")
 
@@ -250,10 +279,17 @@ while seguir:
 
         result = cursor.fetchall()
 
+        print(' RUT   |   NOMBRE   |EDAD|  LICENCIA  ')
+
         for x in result:
             print(x)
 
-        buscar_chofer = False
+        pregunta = str(input('Desea buscar otro chofer?[S/n]'))
+
+        if pregunta.upper() == 'S':
+            buscar_chofer = True
+        else:
+            buscar_chofer = False
     # ////////////////////////BUSCAR HOJA////////////////////////
     while buscar_ruta:
 
@@ -268,4 +304,11 @@ while seguir:
 
         for x in result:
             print(x)
-        buscar_ruta = False
+
+        pregunta = str(input('Desea ingresar otra hoja de ruta?[S/n]'))
+
+        if pregunta.upper() == 'S':
+            buscar_ruta = True
+        else:
+            buscar_ruta = False
+print('\n...Hasta luego!...')
